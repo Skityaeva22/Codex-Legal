@@ -1,0 +1,15 @@
+:root {
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body {
+  margin: 2rem;
+}
+
+p {
+  margin: 0;
+}

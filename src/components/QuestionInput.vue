@@ -146,7 +146,6 @@ const onSendQuestion = () => {
 
   emit("update-dialog", input.value, file.value ?? undefined);
   input.value = "";
-  file.value = undefined;
 };
 </script>
 

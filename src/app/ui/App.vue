@@ -29,11 +29,11 @@
 </template>
 
 <script setup lang="ts">
-import QuestionInput from "./components/QuestionInput.vue";
-import QueryBox from "./components/QueryBox.vue";
-import ResultBox from "./components/ResultBox.vue";
+import QuestionInput from "../../components/QuestionInput.vue";
+import QueryBox from "../../components/QueryBox.vue";
+import ResultBox from "../../components/ResultBox.vue";
 import {ref} from "vue";
-import type {Dialog} from "./types";
+import type {Dialog} from "../../shared/types";
 import {ElNotification} from "element-plus";
 
 const answer = "ответ";

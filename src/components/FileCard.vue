@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import {formatFileSize, getFileCardStyle, getFileType} from "../utils";
+import {formatFileSize, getFileCardStyle, getFileType} from "../shared/utils";
 
 const props = defineProps<{
   file: File;

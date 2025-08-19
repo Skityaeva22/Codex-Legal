@@ -95,7 +95,7 @@ onMounted(() => {
 }
 
 .dialog-panel {
-  height: 75vh;
+  height: 74vh;
   margin-bottom: 10px;
   border-radius: 4px;
   margin-top: 2rem;
@@ -103,7 +103,7 @@ onMounted(() => {
 }
 
 .dialog-panel.has-file {
-  height: calc(75vh - 70px);
+  height: calc(71vh - 70px);
 }
 
 .question-input-wrapper {

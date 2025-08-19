@@ -206,7 +206,7 @@ const onSendQuestion = () => {
 
 .button-group {
   display: flex;
-  margin-top: 10px;
+  margin: 10px;
   justify-content: space-between;
 }
 

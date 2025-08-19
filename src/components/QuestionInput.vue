@@ -21,15 +21,20 @@
       >
         <ElButton
             :disabled="!hasDialog"
-            :icon="Delete"
             size="large"
-            type="danger"
-            circle
+            text
             @click="dialog = true"
-        />
+        >
+          <ElIcon
+              :size="25"
+              color="#FF0000"
+          >
+            <Delete />
+          </ElIcon>
+        </ElButton>
       </ElTooltip>
 
-      <div style="display: flex;">
+      <div style="display: flex; align-items: center;">
         <div class="upload-container">
           <ElTooltip
               effect="dark"
@@ -37,12 +42,17 @@
               placement="bottom"
           >
             <ElButton
-                :icon="Paperclip"
                 size="large"
                 text
-                circle
                 @click="triggerUpload"
-            />
+            >
+              <ElIcon
+                  :size="25"
+                  color="#FFD700"
+              >
+                <Paperclip />
+              </ElIcon>
+            </ElButton>
           </ElTooltip>
           <input
               type="file"
@@ -60,13 +70,18 @@
         >
           <ElButton
               :disabled="!isActiveSendButton"
-              :icon="Search"
-              type="primary"
               size="large"
-              circle
-              style="margin-left: 10px"
+              text
+              style="margin-left: 20px"
               @click="onSendQuestion"
-          />
+          >
+            <ElIcon
+                :size="25"
+                color="#6cd7ea"
+            >
+              <Search />
+            </ElIcon>
+          </ElButton>
         </ElTooltip>
       </div>
     </div>
@@ -86,7 +101,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: "update-dialog", question?: string, file?: File): void
+  (e: "update-dialog", question?: string, fileInfo?: File): void
   (e: "clear-history"): void
 }>()
 

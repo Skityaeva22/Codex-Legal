@@ -4,10 +4,17 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: linear-gradient(120deg, #000000, #a31d05,#000000);
+}
+
+#app {
+  display: flex;
+  justify-content: center;
 }
 
 body {
-  margin: 2rem;
+  margin: 0;
+  padding: 0;
 }
 
 p {

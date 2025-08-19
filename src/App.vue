@@ -8,7 +8,7 @@
         class="dialog-panel"
         :class="{ 'has-file': file }"
     >
-      <div v-for="item in dialog" style="margin-bottom: 20px">
+      <div v-for="item in dialog" style="margin-bottom: 20px;">
         <QueryBox :question="item?.question" :file="item?.file" />
         <ResultBox :answer="item?.answer" />
       </div>
@@ -40,8 +40,8 @@ const answer = "ответ";
 const dialog = ref<Dialog[]>([]);
 const file = ref<File | undefined>();
 
-const updateDialog = (question?: string, file?: File) => {
-  if (dialog.value?.find((item) => item.file && item.file?.name === file?.name)) {
+const updateDialog = (question?: string, fileInfo?: File) => {
+  if (dialog.value?.find((item) => item.file && item.file?.name === fileInfo?.name)) {
     return ElNotification({
       title: 'Ошибка',
       message: 'Файл с таким же наименованием уже загружен!',
@@ -49,7 +49,8 @@ const updateDialog = (question?: string, file?: File) => {
     });
   }
 
-  dialog.value.push({ question, file, answer });
+  dialog.value.push({ question, file: fileInfo, answer });
+  file.value = undefined;
 };
 </script>
 
@@ -59,6 +60,7 @@ const updateDialog = (question?: string, file?: File) => {
   flex-direction: column;
   height: 100vh;
   justify-content: center;
+  width: 60%;
 }
 
 .app-container.has-dialog {
@@ -70,25 +72,27 @@ const updateDialog = (question?: string, file?: File) => {
   margin-bottom: 10px;
   border-radius: 4px;
   margin-top: 2rem;
+  background: #fcf9c4;
 }
 
 .dialog-panel.has-file {
-  height: calc(75vh - 60px);
-}
-
-:deep(.el-scrollbar__wrap) {
-  margin: 10px 10px 10px 10px;
+  height: calc(75vh - 70px);
 }
 
 .question-input-wrapper {
-  background-color: white;
+  background: #741504;
   margin-top: 10px;
+  border-radius: 4px;
 }
 
 .question-input-wrapper.is-fixed {
   position: fixed;
   bottom: 2rem;
-  left: 2rem;
-  right: 2rem;
+  left: 20%;
+  right: 20%;
+}
+
+:deep(.el-scrollbar__wrap) {
+  padding: 10px;
 }
 </style>

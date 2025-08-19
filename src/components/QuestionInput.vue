@@ -135,7 +135,7 @@ const isValidFile = ref(false);
 const showFileList = ref(false);
 
 const fileInput = ref<HTMLInputElement | null>(null);
-const acceptedFormats = '.doc,.docx,.pdf,.md,.xls,.xlsx';
+const acceptedFormats = '.doc,.docx,.pdf,.md,.xls,.xlsx,.epub,.fb2';
 const files = defineModel<File[] | []>({ default: [] });
 
 const dialog = ref(false);
@@ -156,6 +156,8 @@ const validateFileType = (file: File) => {
     'text/markdown',
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/epub+zip',
+    'application/x-fictionbook+xml',
   ];
 
   return validTypes.includes(file.type);

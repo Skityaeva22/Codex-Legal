@@ -3,7 +3,11 @@
     <ElCard v-if="question" class="card">
       <p>{{ question }}</p>
     </ElCard>
-    <FileCard v-if="file" :file="file" style="align-self: end;" />
+
+    <div v-if="files?.length">
+      <FileCard :file="files[0]" style="align-self: end;" />
+      <p v-if="files.length > 1">+ {{ files.length - 1 }}</p>
+    </div>
   </div>
 </template>
 
@@ -12,7 +16,7 @@ import FileCard from "./FileCard.vue";
 
 const props = defineProps<{
   question?: string;
-  file?: File;
+  files?: File[] | [];
 }>()
 </script>
 

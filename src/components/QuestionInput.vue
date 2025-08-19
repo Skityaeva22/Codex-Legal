@@ -1,10 +1,34 @@
 <template>
-  <FileCard
-      v-if="file"
-      :file="file"
-      is-close
-      @clear-file="file = undefined"
-  />
+  <div style="display: flex; align-items: center;">
+    <ElScrollbar v-if="files?.length" style="height: 90px;">
+      <div class="scrollbar-flex-content">
+        <FileCard
+            v-for="(file, index) in files.slice(0, 10)"
+            :key="index"
+            :file="file"
+            is-close
+            class="scrollbar-demo-item"
+            @clear-file="onClearFile(index)"
+        />
+      </div>
+    </ElScrollbar>
+    <div v-if="files.length > 10" style="padding-right: 10px; padding-left: 10px">
+      <ElButton style="position: relative;" @click="showFileList = !showFileList">
+        + {{ files.length - 10 }}
+      </ElButton>
+
+      <div v-if="showFileList" class="file-list">
+        <ElScrollbar height="100px" style="width: 200px">
+          <div v-for="(file, index) in files.slice(10)" :key="index" class="file-item">
+            <ElText truncated>{{ file.name }}</ElText>
+            <ElIcon class="close-icon" @click="onClearFile(index)">
+              <Close />
+            </ElIcon>
+          </div>
+        </ElScrollbar>
+      </div>
+    </div>
+  </div>
   <div class="question-panel">
     <ElInput
         v-model="input"
@@ -59,6 +83,7 @@
               ref="fileInput"
               :accept="acceptedFormats"
               style="display: none;"
+              multiple
               @change="onFileChange"
           />
         </div>
@@ -101,21 +126,22 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: "update-dialog", question?: string, fileInfo?: File): void
+  (e: "update-dialog", question?: string, fileList?: File[] | []): void
   (e: "clear-history"): void
 }>()
 
 const input = ref("");
 const isValidFile = ref(false);
+const showFileList = ref(false);
 
 const fileInput = ref<HTMLInputElement | null>(null);
 const acceptedFormats = '.doc,.docx,.pdf,.md,.xls,.xlsx';
-const file = defineModel<File | undefined>({ default: undefined });
+const files = defineModel<File[] | []>({ default: [] });
 
 const dialog = ref(false);
 
 const isActiveSendButton = computed(() => {
-  return input.value?.trim()?.length || file.value;
+  return input.value?.trim()?.length || files.value?.length;
 });
 
 const triggerUpload = () => {
@@ -137,7 +163,7 @@ const validateFileType = (file: File) => {
 
 const clearHistory = () => {
   input.value = "";
-  file.value = undefined;
+  files.value = [];
   dialog.value = false;
 
   emit("clear-history");
@@ -145,11 +171,17 @@ const clearHistory = () => {
 
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  file.value = target.files?.[0];
+  Array.from(target.files)?.forEach((item) => {
+    files.value.push(item);
+  });
+};
+
+const onClearFile = (index: number) => {
+  files.value?.splice(index, 1);
 };
 
 const onSendQuestion = () => {
-  isValidFile.value = file.value ? validateFileType(file.value) : true;
+  isValidFile.value = files.value?.length ? files.value?.every(validateFileType) : true;
 
   if (!isValidFile.value) {
     return ElNotification({
@@ -159,7 +191,7 @@ const onSendQuestion = () => {
     })
   }
 
-  emit("update-dialog", input.value, file.value ?? undefined);
+  emit("update-dialog", input.value, files.value?.length ? files.value : []);
   input.value = "";
 };
 </script>
@@ -179,5 +211,38 @@ const onSendQuestion = () => {
 .upload-container {
   display: flex;
   align-items: center;
+}
+
+.scrollbar-flex-content {
+  display: flex;
+  width: fit-content;
+  gap: 20px;
+  padding-right: 10px;
+}
+
+.scrollbar-demo-item {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.file-list {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-icon {
+  cursor: pointer;
 }
 </style>

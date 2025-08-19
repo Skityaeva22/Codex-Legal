@@ -6,10 +6,10 @@
     <ElScrollbar
         v-if="dialog?.length"
         class="dialog-panel"
-        :class="{ 'has-file': file }"
+        :class="{ 'has-file': files?.length > 0 }"
     >
       <div v-for="item in dialog" style="margin-bottom: 20px;">
-        <QueryBox :question="item?.question" :file="item?.file" />
+        <QueryBox :question="item?.question" :files="item?.files" />
         <ResultBox :answer="item?.answer" />
       </div>
     </ElScrollbar>
@@ -19,7 +19,7 @@
         :class="{ 'is-fixed': dialog?.length }"
     >
       <QuestionInput
-          v-model="file"
+          v-model="files"
           :has-dialog="dialog?.length !== 0"
           @update-dialog="updateDialog"
           @clear-history="dialog = []"
@@ -38,19 +38,23 @@ import {ElNotification} from "element-plus";
 
 const answer = "ответ";
 const dialog = ref<Dialog[]>([]);
-const file = ref<File | undefined>();
+const files = ref<File[] | []>([]);
 
-const updateDialog = (question?: string, fileInfo?: File) => {
-  if (dialog.value?.find((item) => item.file && item.file?.name === fileInfo?.name)) {
-    return ElNotification({
+const updateDialog = (question?: string, fileList?: File[] | []) => {
+  const fileListNames = fileList?.map((f) => f?.name);
+  const hasDuplicateFile = dialog.value?.some((d) => d.files?.some((f) => fileListNames?.includes(f.name)));
+
+  if (hasDuplicateFile) {
+    ElNotification({
       title: 'Ошибка',
       message: 'Файл с таким же наименованием уже загружен!',
       type: 'error',
     });
+    return;
   }
 
-  dialog.value.push({ question, file: fileInfo, answer });
-  file.value = undefined;
+  dialog.value.push({ question, files: fileList, answer });
+  files.value = [];
 };
 </script>
 

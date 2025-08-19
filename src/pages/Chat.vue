@@ -137,15 +137,26 @@ onMounted(async () => {
   margin-bottom: 10px;
   border-radius: 4px;
   margin-top: 2rem;
-  border: 1px solid white;
+  background: rgba(116, 21, 4, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+      0 8px 32px 0 rgba(31, 38, 135, 0.15),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .dialog-panel.has-file {
   height: calc(71vh - 70px);
+  background: rgba(116, 21, 4, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+      0 8px 32px 0 rgba(31, 38, 135, 0.15),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .question-input-wrapper {
-  background: #741504;
+  background: rgba(116, 21, 4, 0.25);
   margin-top: 10px;
   border-radius: 4px;
 }

@@ -1,4 +1,5 @@
 <template>
+  <HistoryDeleteDialog v-model="dialog" @clear-history="clearHistory" />
   <div style="display: flex; align-items: center">
     <ElScrollbar v-if="files?.length" style="height: 90px">
       <div class="scrollbar-flex-content">
@@ -18,6 +19,7 @@
     >
       <ElButton
         style="position: relative"
+        class="files-button"
         @click="showFileList = !showFileList"
       >
         + {{ files.length - 10 }}
@@ -101,7 +103,6 @@
       </div>
     </div>
   </div>
-  <HistoryDeleteDialog v-model="dialog" @clear-history="clearHistory" />
 </template>
 
 <script setup lang="ts">
@@ -206,6 +207,10 @@ const onSendQuestion = () => {
 .question-panel {
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+  inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .button-group {
@@ -224,6 +229,8 @@ const onSendQuestion = () => {
   width: fit-content;
   gap: 20px;
   padding-right: 10px;
+  background: rgba(116, 21, 4, 0.25);
+  backdrop-filter: blur(10px);
 }
 
 .scrollbar-demo-item {
@@ -233,12 +240,19 @@ const onSendQuestion = () => {
 
 .file-list {
   position: absolute;
-  background-color: #fff;
-  border: 1px solid #e4e7ed;
   border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
   margin-top: 10px;
+  color: white !important;
+
+  background: rgba(116, 21, 4, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  transition: all 0.3s ease;
 }
 
 .file-item {
@@ -250,5 +264,66 @@ const onSendQuestion = () => {
 
 .close-icon {
   cursor: pointer;
+}
+
+.input-place :deep(.el-textarea__inner) {
+  background: rgba(116, 21, 4, 0.25) !important;
+  border-radius: 4px !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  transition: all 0.3s ease !important;
+}
+
+.input-place :deep(.el-textarea__inner):focus {
+  border-color: rgba(108, 215, 234, 0.6) !important;
+  box-shadow:
+      0 0 0 2px rgba(108, 215, 234, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+}
+
+.input-place :deep(.el-textarea__inner)::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.input-place :deep(.el-textarea__inner):hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.input-place :deep(.el-textarea__inner):disabled {
+  background: rgba(116, 21, 4, 0.15) !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  cursor: not-allowed !important;
+}
+
+.input-place :deep(.el-textarea__inner) {
+  border: none !important;
+  outline: none !important;
+}
+
+.input-place :deep(.el-textarea) {
+  background: transparent !important;
+}
+
+.files-button {
+  background: rgba(116, 21, 4, 0.25) !important;
+  border-radius: 4px !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  transition: all 0.3s ease !important;
+}
+
+:deep(.el-text) {
+  color: white;
 }
 </style>

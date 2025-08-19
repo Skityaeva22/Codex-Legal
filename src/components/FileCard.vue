@@ -47,6 +47,17 @@ const emit = defineEmits<{
   margin-bottom: 5px;
   align-items: center;
   position: relative;
+
+  background: rgba(116, 21, 4, 0.25) !important;
+  border-radius: 4px !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  transition: all 0.3s ease !important;
 }
 
 .icon-text {
@@ -72,5 +83,9 @@ const emit = defineEmits<{
   position: absolute;
   top: 8px;
   right: 8px;
+}
+
+:deep(.el-text) {
+  color: white;
 }
 </style>

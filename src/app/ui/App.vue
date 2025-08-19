@@ -22,7 +22,7 @@
           v-model="files"
           :has-dialog="dialog?.length !== 0"
           @update-dialog="updateDialog"
-          @clear-history="dialog = []"
+          @clear-history="onClearHistory"
       />
     </div>
   </div>
@@ -32,17 +32,23 @@
 import QuestionInput from "../../components/QuestionInput.vue";
 import QueryBox from "../../components/QueryBox.vue";
 import ResultBox from "../../components/ResultBox.vue";
-import {ref} from "vue";
-import type {Dialog} from "../../shared/types";
+import {onMounted, ref} from "vue";
+import type {Dialog, File} from "../../shared/types";
 import {ElNotification} from "element-plus";
 
 const answer = "ответ";
 const dialog = ref<Dialog[]>([]);
 const files = ref<File[] | []>([]);
 
+const onClearHistory = () => {
+  dialog.value = [];
+  localStorage.removeItem('dialog');
+};
+
 const updateDialog = (question?: string, fileList?: File[] | []) => {
   const fileListNames = fileList?.map((f) => f?.name);
   const hasDuplicateFile = dialog.value?.some((d) => d.files?.some((f) => fileListNames?.includes(f.name)));
+  let filesToSave: File[] | [] = [];
 
   if (hasDuplicateFile) {
     ElNotification({
@@ -53,9 +59,26 @@ const updateDialog = (question?: string, fileList?: File[] | []) => {
     return;
   }
 
-  dialog.value.push({ question, files: fileList, answer });
+  if (fileList?.length) {
+    filesToSave = fileList?.map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      lastModified: file.lastModified
+    }));
+  } else {
+    filesToSave = [];
+  }
+
+  dialog.value.push({ question, files: filesToSave, answer });
+  localStorage.setItem("dialog", JSON.stringify(dialog.value));
   files.value = [];
 };
+
+onMounted(() => {
+  const localDialog = localStorage.getItem("dialog");
+  dialog.value = localDialog ? JSON.parse(localDialog) : [];
+});
 </script>
 
 <style scoped>

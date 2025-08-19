@@ -29,6 +29,7 @@ import ResultBox from "../../components/ResultBox.vue";
 import { onMounted, ref } from "vue";
 import type { Dialog, File } from "../../shared/types";
 import { ElNotification } from "element-plus";
+import {warhammer} from "../../services/api";
 
 const answer = "ответ";
 const dialog = ref<Dialog[]>([]);
@@ -71,9 +72,11 @@ const updateDialog = (question?: string, fileList?: File[] | []) => {
   files.value = [];
 };
 
-onMounted(() => {
+onMounted(async () => {
   const localDialog = localStorage.getItem("dialog");
   dialog.value = localDialog ? JSON.parse(localDialog) : [];
+
+  console.log(await warhammer.fetchRoot());
 });
 </script>
 

@@ -5,7 +5,7 @@
     </ElCard>
 
     <div v-if="files?.length" class="file-query">
-      <FileCard :file="files[0]" style="align-self: end;" />
+      <FileCard :file="files[0]" style="align-self: end" />
       <p v-if="files.length > 1">+ {{ files.length - 1 }}</p>
     </div>
   </div>
@@ -17,7 +17,7 @@ import FileCard from "./FileCard.vue";
 const props = defineProps<{
   question?: string;
   files?: File[] | [];
-}>()
+}>();
 </script>
 
 <style scoped>

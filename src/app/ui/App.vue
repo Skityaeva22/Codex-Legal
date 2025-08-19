@@ -1,28 +1,22 @@
 <template>
-  <div
-      class="app-container"
-      :class="{ 'has-dialog': dialog?.length }"
-  >
+  <div class="app-container" :class="{ 'has-dialog': dialog?.length }">
     <ElScrollbar
-        v-if="dialog?.length"
-        class="dialog-panel"
-        :class="{ 'has-file': files?.length > 0 }"
+      v-if="dialog?.length"
+      class="dialog-panel"
+      :class="{ 'has-file': files?.length > 0 }"
     >
-      <div v-for="item in dialog" style="margin-bottom: 20px;">
+      <div v-for="item in dialog" style="margin-bottom: 20px">
         <QueryBox :question="item?.question" :files="item?.files" />
         <ResultBox :answer="item?.answer" />
       </div>
     </ElScrollbar>
 
-    <div
-        class="question-input-wrapper"
-        :class="{ 'is-fixed': dialog?.length }"
-    >
+    <div class="question-input-wrapper" :class="{ 'is-fixed': dialog?.length }">
       <QuestionInput
-          v-model="files"
-          :has-dialog="dialog?.length !== 0"
-          @update-dialog="updateDialog"
-          @clear-history="onClearHistory"
+        v-model="files"
+        :has-dialog="dialog?.length !== 0"
+        @update-dialog="updateDialog"
+        @clear-history="onClearHistory"
       />
     </div>
   </div>
@@ -32,9 +26,9 @@
 import QuestionInput from "../../components/QuestionInput.vue";
 import QueryBox from "../../components/QueryBox.vue";
 import ResultBox from "../../components/ResultBox.vue";
-import {onMounted, ref} from "vue";
-import type {Dialog, File} from "../../shared/types";
-import {ElNotification} from "element-plus";
+import { onMounted, ref } from "vue";
+import type { Dialog, File } from "../../shared/types";
+import { ElNotification } from "element-plus";
 
 const answer = "ответ";
 const dialog = ref<Dialog[]>([]);
@@ -42,29 +36,31 @@ const files = ref<File[] | []>([]);
 
 const onClearHistory = () => {
   dialog.value = [];
-  localStorage.removeItem('dialog');
+  localStorage.removeItem("dialog");
 };
 
 const updateDialog = (question?: string, fileList?: File[] | []) => {
   const fileListNames = fileList?.map((f) => f?.name);
-  const hasDuplicateFile = dialog.value?.some((d) => d.files?.some((f) => fileListNames?.includes(f.name)));
+  const hasDuplicateFile = dialog.value?.some((d) =>
+    d.files?.some((f) => fileListNames?.includes(f.name))
+  );
   let filesToSave: File[] | [] = [];
 
   if (hasDuplicateFile) {
     ElNotification({
-      title: 'Ошибка',
-      message: 'Файл с таким же наименованием уже загружен!',
-      type: 'error',
+      title: "Ошибка",
+      message: "Файл с таким же наименованием уже загружен!",
+      type: "error",
     });
     return;
   }
 
   if (fileList?.length) {
-    filesToSave = fileList?.map(file => ({
+    filesToSave = fileList?.map((file) => ({
       name: file.name,
       size: file.size,
       type: file.type,
-      lastModified: file.lastModified
+      lastModified: file.lastModified,
     }));
   } else {
     filesToSave = [];

@@ -1,25 +1,35 @@
 <template>
-  <div style="display: flex; align-items: center;">
-    <ElScrollbar v-if="files?.length" style="height: 90px;">
+  <div style="display: flex; align-items: center">
+    <ElScrollbar v-if="files?.length" style="height: 90px">
       <div class="scrollbar-flex-content">
         <FileCard
-            v-for="(file, index) in files.slice(0, 10)"
-            :key="index"
-            :file="file"
-            is-close
-            class="scrollbar-demo-item"
-            @clear-file="onClearFile(index)"
+          v-for="(file, index) in files.slice(0, 10)"
+          :key="index"
+          :file="file"
+          is-close
+          class="scrollbar-demo-item"
+          @clear-file="onClearFile(index)"
         />
       </div>
     </ElScrollbar>
-    <div v-if="files.length > 10" style="padding-right: 10px; padding-left: 10px">
-      <ElButton style="position: relative;" @click="showFileList = !showFileList">
+    <div
+      v-if="files.length > 10"
+      style="padding-right: 10px; padding-left: 10px"
+    >
+      <ElButton
+        style="position: relative"
+        @click="showFileList = !showFileList"
+      >
         + {{ files.length - 10 }}
       </ElButton>
 
       <div v-if="showFileList" class="file-list">
         <ElScrollbar height="100px" style="width: 200px">
-          <div v-for="(file, index) in files.slice(10)" :key="index" class="file-item">
+          <div
+            v-for="(file, index) in files.slice(10)"
+            :key="index"
+            class="file-item"
+          >
             <ElText truncated>{{ file.name }}</ElText>
             <ElIcon class="close-icon" @click="onClearFile(index)">
               <Close />
@@ -31,80 +41,59 @@
   </div>
   <div class="question-panel">
     <ElInput
-        v-model="input"
-        :autosize="{ minRows: 2, maxRows: 10 }"
-        type="textarea"
-        class="input-place"
+      v-model="input"
+      :autosize="{ minRows: 2, maxRows: 10 }"
+      type="textarea"
+      class="input-place"
     />
 
     <div class="button-group">
       <ElTooltip
-          effect="dark"
-          content="Удалить историю запросов"
-          placement="bottom"
+        effect="dark"
+        content="Удалить историю запросов"
+        placement="bottom"
       >
         <ElButton
-            :disabled="!hasDialog"
-            size="large"
-            text
-            @click="dialog = true"
+          :disabled="!hasDialog"
+          size="large"
+          text
+          @click="dialog = true"
         >
-          <ElIcon
-              :size="25"
-              color="#FF0000"
-          >
+          <ElIcon :size="25" color="#FF0000">
             <Delete />
           </ElIcon>
         </ElButton>
       </ElTooltip>
 
-      <div style="display: flex; align-items: center;">
+      <div style="display: flex; align-items: center">
         <div class="upload-container">
-          <ElTooltip
-              effect="dark"
-              content="Загрузить файл"
-              placement="bottom"
-          >
-            <ElButton
-                size="large"
-                text
-                @click="triggerUpload"
-            >
-              <ElIcon
-                  :size="25"
-                  color="#FFD700"
-              >
+          <ElTooltip effect="dark" content="Загрузить файл" placement="bottom">
+            <ElButton size="large" text @click="triggerUpload">
+              <ElIcon :size="25" color="#FFD700">
                 <Paperclip />
               </ElIcon>
             </ElButton>
           </ElTooltip>
           <input
-              :key="key"
-              type="file"
-              ref="fileInput"
-              :accept="acceptedFormats"
-              style="display: none;"
-              multiple
-              @change="onFileChange"
+            :key="key"
+            type="file"
+            ref="fileInput"
+            :accept="acceptedFormats"
+            style="display: none"
+            multiple
+            @change="onFileChange"
           />
         </div>
 
-        <ElTooltip
-            effect="dark"
-            content="Отправить запрос"
-            placement="bottom"
-        >
+        <ElTooltip effect="dark" content="Отправить запрос" placement="bottom">
           <ElButton
-              :disabled="!isActiveSendButton"
-              size="large"
-              text
-              style="margin-left: 20px"
-              @click="onSendQuestion"
+            :disabled="!isActiveSendButton"
+            size="large"
+            text
+            style="margin-left: 20px"
+            @click="onSendQuestion"
           >
-            <ElIcon
-                :size="25"
-                color="#6cd7ea"
-            >
+            <ElIcon :size="25" color="#6cd7ea">
               <Search />
             </ElIcon>
           </ElButton>
@@ -116,20 +105,20 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {Delete, Paperclip, Search} from "@element-plus/icons-vue";
-import {ElNotification} from "element-plus";
+import { computed, ref } from "vue";
+import { Delete, Paperclip, Search } from "@element-plus/icons-vue";
+import { ElNotification } from "element-plus";
 import FileCard from "./FileCard.vue";
 import HistoryDeleteDialog from "./HistoryDeleteDialog.vue";
 
 const props = defineProps<{
   hasDialog: boolean;
-}>()
+}>();
 
 const emit = defineEmits<{
-  (e: "update-dialog", question?: string, fileList?: File[] | []): void
-  (e: "clear-history"): void
-}>()
+  (e: "update-dialog", question?: string, fileList?: File[] | []): void;
+  (e: "clear-history"): void;
+}>();
 
 const input = ref("");
 const isValidFile = ref(false);
@@ -137,7 +126,7 @@ const showFileList = ref(false);
 const key = ref("");
 
 const fileInput = ref<HTMLInputElement | null>(null);
-const acceptedFormats = '.doc,.docx,.pdf,.md,.xls,.xlsx,.epub,.fb2';
+const acceptedFormats = ".doc,.docx,.pdf,.md,.xls,.xlsx,.epub,.fb2";
 const files = defineModel<File[] | []>({ default: [] });
 
 const dialog = ref(false);
@@ -146,10 +135,10 @@ const isActiveSendButton = computed(() => {
   return input.value?.trim()?.length || files.value?.length;
 });
 
-
 function generateUniqueKey(length: number = 10): string {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let uniqueKey = '';
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let uniqueKey = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     uniqueKey += characters[randomIndex];
@@ -164,14 +153,14 @@ const triggerUpload = () => {
 
 const validateFileType = (file: File) => {
   const validTypes = [
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/pdf',
-    'text/markdown',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/epub+zip',
-    'application/x-fictionbook+xml',
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/pdf",
+    "text/markdown",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/epub+zip",
+    "application/x-fictionbook+xml",
   ];
 
   return validTypes.includes(file.type);
@@ -197,14 +186,16 @@ const onClearFile = (index: number) => {
 };
 
 const onSendQuestion = () => {
-  isValidFile.value = files.value?.length ? files.value?.every(validateFileType) : true;
+  isValidFile.value = files.value?.length
+    ? files.value?.every(validateFileType)
+    : true;
 
   if (!isValidFile.value) {
     return ElNotification({
-      title: 'Ошибка',
-      message: 'Недопустимый формат файла!',
-      type: 'error',
-    })
+      title: "Ошибка",
+      message: "Недопустимый формат файла!",
+      type: "error",
+    });
   }
 
   emit("update-dialog", input.value, files.value?.length ? files.value : []);

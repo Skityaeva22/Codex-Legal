@@ -137,7 +137,7 @@ onMounted(async () => {
   margin-bottom: 10px;
   border-radius: 4px;
   margin-top: 2rem;
-  background: #fcf9c4;
+  border: 1px solid white;
 }
 
 .dialog-panel.has-file {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 
-const BASE_URL = 'http://192.168.162.167:8000/docs';
+const BASE_URL = 'http://192.168.162.167:8000';
 
 const filterParams = (params: object) => {
     for (let key in params) {

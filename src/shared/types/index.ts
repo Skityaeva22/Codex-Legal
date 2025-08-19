@@ -1,7 +1,7 @@
 export interface Dialog {
     question?: string;
     files?: File[] | [];
-    answer?: string;
+    answer?: Answer;
 }
 
 export interface File {
@@ -9,4 +9,10 @@ export interface File {
     size: number;
     type: string;
     lastModified: number;
+}
+
+export interface Answer {
+    answer: string;
+    sources: string[];
+    message?: string | null;
 }

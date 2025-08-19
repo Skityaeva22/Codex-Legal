@@ -12,8 +12,6 @@ export const getFileType = (fileType: string): string => {
             return "XLSX";
         case 'text/markdown':
             return "MD";
-        case 'application/epub+zip':
-            return "EPUB";
         case 'application/x-fictionbook+xml':
             return "FB2";
         default:

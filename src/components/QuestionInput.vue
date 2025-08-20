@@ -161,6 +161,7 @@ const validateFileType = (file: File) => {
     "application/vnd.ms-excel",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/x-fictionbook+xml",
+    "",
   ];
 
   return validTypes.includes(file.type);
